@@ -9,10 +9,17 @@ change_month = []
 
 with open (csvpath) as csvfile:
     csvreader = csv.reader(csvfile, delimiter=',')
+    header = next(csvreader)
+
     lines = len(list(csvreader))
 
     #something is off since getting a zero - need help
     total = sum([row[1]] for row in csvreader)
+
+    print("Financial Analysis")
+    print("-------------------------------")
+    print("Total Months: " + str(lines))
+    print("Total: $" + str({sum(profit)}))
 
     #Calculate the changes in "Profit/Losses" over the entire period, 
     #then find the average of those changes
@@ -33,14 +40,6 @@ with open (csvpath) as csvfile:
     min_profit = min(change_month)
     min_month = change_month.index(min(change_month)) + 1
 
-print("Financial Analysis")
-print("-------------------------------")
-print("Total Months: " + str(lines - 1))
-print("Total: $" + str({sum(profit)}))
-print(f"Average Change: {round(sum(change_month)/len(change_month),2)}")
-print(f"Greatest Increase in Profits: {months[max_month]} ${(str(max_profit))}")
-print(f"Greatest Decrease in Profits: {months[min_month]} ${(str(min_profit))}")
-
-
-
-    
+    print(f"Average Change: {round(sum(change_month)/len(change_month),2)}")
+    print(f"Greatest Increase in Profits: {months[max_month]} ${(str(max_profit))}")
+    print(f"Greatest Decrease in Profits: {months[min_month]} ${(str(min_profit))}")
