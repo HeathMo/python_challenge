@@ -13,7 +13,9 @@ def print_percents(election_data):
 #The total number of votes cast
 with open (poll_csv, 'r') as csvfile:
     csvreader = csv.reader(csvfile, delimiter=',')
-    total_votes = len(list(csvreader)) - 1
+    header = next(csvreader)
+
+    total_votes = len(list(csvreader))
     print("Total Votes: " + str(total_votes))
 #A complete list of candidates who received votes
     data = csv.DictReader(poll_csv)

@@ -3,43 +3,63 @@ import csv
 
 csvpath = os.path.join('Resources', 'budget_data.csv')
 
-months = []
-profit = []
-change_month = []
+total_months = 0
+total_net = 0
+months_change = []
+net_change_list = []
+greatest_up = ["",0]
+greatest_down = ["",0]
 
 with open (csvpath) as csvfile:
     csvreader = csv.reader(csvfile, delimiter=',')
-    header = next(csvreader)
-
-    lines = len(list(csvreader))
-
+    
+    csv_header = next(csvreader)
     #something is off since getting a zero - need help
-    total = sum([row[1]] for row in csvreader)
-
-    print("Financial Analysis")
-    print("-------------------------------")
-    print("Total Months: " + str(lines))
-    print("Total: $" + str({sum(profit)}))
+    first_row = next(csvreader)
+    total_months = total_months + 1
+    total_net = total_net + float(first_row[1])
+    previous_net = float(first_row[1])
 
     #Calculate the changes in "Profit/Losses" over the entire period, 
     #then find the average of those changes
-    #need to subtract - like the candies
     for row in csvreader:
-        months.append(row[0])
-        profit.append(row[1])
+        total_months = total_months + 1
+        total_net = total_net + int(row[1])
 
-    for x in range(len(profit) - 1):
-        change_month.append(profit[x+1] - profit[x])
+        net_change = int(row[1]) - previous_net
+        net_change_list = net_change_list + [net_change]
+        months_change = months_change + [row[0]]
+        month_average = sum(net_change_list) / len(net_change_list)
 
 #The greatest increase in profits (date and amount) over the entire period
-#error reads: ValueError: max() arg is an empty sequence
-    max_profit = max(change_month)
-    max_month = change_month.index(max(change_month)) + 1
-
+        #error reads: ValueError: max() arg is an empty sequence
+        #max_profit = max(change_month)
+        #max_month = change_month.index(max(change_month)) + 1
+        if net_change > greatest_up[1]:
+            greatest_up[0] = row[0]
+            greatest_up[1] = net_change
 #The greatest decrease in profits (date and amount) over the entire period
-    min_profit = min(change_month)
-    min_month = change_month.index(min(change_month)) + 1
+        #min_profit = min(change_month)
+        #min_month = change_month.index(min(change_month)) + 1
+        if net_change < greatest_down[1]:
+            greatest_down[0] = row[0]
+            greatest_down[1] = net_change
 
-    print(f"Average Change: {round(sum(change_month)/len(change_month),2)}")
-    print(f"Greatest Increase in Profits: {months[max_month]} ${(str(max_profit))}")
-    print(f"Greatest Decrease in Profits: {months[min_month]} ${(str(min_profit))}")
+print("Financial Analysis")
+print("-------------------------")
+print(f"Total Months: {total_months}")
+print(f"Total: ${total_net}")
+print(f"Average Change: ${month_average:.2f}")
+print(f"Greatest Increase in Profits: {greatest_up[0]} (${greatest_up[1]})")
+print(f"Greatest Decrease in Profits: {greatest_down[0]} (${greatest_down[1]})")
+
+PyBank_analysis = (
+                    f"Financial Analysis\n"
+                    f"--------------------\n"
+                    f"Total Months: {total_months}\n"
+                    f"Average Change: ${month_average:.2f}\n"
+                    f"Greatest Increase in Profits: {greatest_up[0]} (${greatest_up[1]}\n"
+                    f"Greatest Decrease in Profits: {greatest_down[0]} (${greatest_down[1]}\n")
+
+with open(PyBank_analysis, "w") as txt_file:
+    txt_file.write(PyBank_analysis)
