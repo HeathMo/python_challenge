@@ -58,8 +58,8 @@ PyBank_analysis = (
                     f"--------------------\n"
                     f"Total Months: {total_months}\n"
                     f"Average Change: ${month_average:.2f}\n"
-                    f"Greatest Increase in Profits: {greatest_up[0]} (${greatest_up[1]}\n"
-                    f"Greatest Decrease in Profits: {greatest_down[0]} (${greatest_down[1]}\n")
+                    f"Greatest Increase in Profits: {greatest_up[0]} (${greatest_up[1]})\n"
+                    f"Greatest Decrease in Profits: {greatest_down[0]} (${greatest_down[1]})\n")
 
 with open(PyBank_analysis, "w") as txt_file:
     txt_file.write(PyBank_analysis)
